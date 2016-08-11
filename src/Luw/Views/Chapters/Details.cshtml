@@ -1,0 +1,72 @@
+@model Luw.Models.ChapterViewModels.DetailsViewModel
+
+@{
+    ViewData["Title"] = "Chapter Details";
+}
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
+@Html.DisplayFor(model => model.SubName)
+<p></p>
+<div class="row">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa fa-remove"></i> Delete</a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <hr />
+        <h4>About the chapter</h4>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Description</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Description)
+            </div>            <br />
+            <label class="col-md-2 control-label">Web Address</label>
+            <div class="col-md-10">
+                <a href="@Model.Url">@Html.DisplayFor(model => model.Url)</a>
+            </div>
+            <label class="col-md-2 control-label">Email</label>
+            <div class="col-md-10">
+                <a href="mailto:@Model.Email">@Html.DisplayFor(model => model.Email)</a>
+            </div>
+            <label class="col-md-2 control-label">Phone</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Phone)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top:25px;">
+    <div class="col-md-12">
+        <h4>About chapter meetings</h4>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Location</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Venue)
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                @Html.DisplayFor(model => model.Street1)
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                @Html.DisplayFor(model => model.Street2)
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                @Html.DisplayFor(model => model.City) @Html.DisplayFor(model => model.Zip)
+            </div>
+            <label class="col-md-2 control-label">Day/Time</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.MeetingInfo)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top:25px;">
+    <div class="col-md-12">
+        <h4>Notes about this chapter</h4>
+        <div style="margin-left:10px;">
+            @Html.DisplayFor(model => model.Notes)
+        </div>
+    </div>
+</div>

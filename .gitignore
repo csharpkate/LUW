@@ -1,0 +1,4 @@
+/.vs/**
+/src/Luw/bin/**
+/src/Luw/obj/**
+/src/Luw/wwwroot/lib/**
