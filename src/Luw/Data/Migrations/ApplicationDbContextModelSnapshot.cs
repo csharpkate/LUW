@@ -22,6 +22,8 @@ namespace Luw.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("City");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -29,6 +31,10 @@ namespace Luw.Data.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -48,10 +54,18 @@ namespace Luw.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("State");
+
+                    b.Property<string>("Street1");
+
+                    b.Property<string>("Street2");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
+
+                    b.Property<string>("Zip");
 
                     b.HasKey("Id");
 

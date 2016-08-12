@@ -1,11 +1,12 @@
 @model IEnumerable<Luw.Models.ChapterViewModels.IndexViewModel>
+@*<link href="~/lib/DataTables-1.10.12/datatables.css" rel="stylesheet" />*@
+<link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
 
 @{
     ViewData["Title"] = "Chapter List";
 }
+
 <h2>Chapters</h2>
-<link href="~/lib/DataTables-1.10.12/datatables.css" rel="stylesheet" />
-<link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
 <p>
     <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> New</a>    
 </p>
