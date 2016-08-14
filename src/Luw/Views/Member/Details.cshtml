@@ -1,0 +1,42 @@
+@model Luw.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Member Details";
+}
+
+<h2>Member Details</h2>
+<p></p>
+<div class="row" style="padding-left: 20px;">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-default"><i class="fa fa-remove"></i> Delete</a>
+</div>
+<hr />
+<div class="well">
+    <div style="padding-left: 20px">
+        <div class="row">
+            <label class="col-md-2 control-label">Name</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-label">Address</label>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Street1)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(model => model.Street2)
+            </div>
+            <div class="col-md-offset-2 col-md-10">
+                @Html.DisplayFor(model => model.City), @Html.DisplayFor(model => model.State) @Html.DisplayFor(model => model.Zip) 
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-2 control-label">Email</label>
+            <div class="col-md-10">
+                <a href="mailto:@Model.Email">@Html.DisplayFor(model => model.Email)</a>
+                
+            </div>
+        </div>        
+    </div>
+</div>
