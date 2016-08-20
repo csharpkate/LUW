@@ -8,9 +8,10 @@ using Luw.Data;
 namespace Luw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160819184130_member_tweaks")]
+    partial class member_tweaks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -161,24 +162,6 @@ namespace Luw.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chapters");
-                });
-
-            modelBuilder.Entity("Luw.Models.MemberChapter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<int>("ChapterId");
-
-                    b.Property<DateTime>("WhenJoined");
-
-                    b.Property<DateTime?>("WhenLeft");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MemberChapters");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

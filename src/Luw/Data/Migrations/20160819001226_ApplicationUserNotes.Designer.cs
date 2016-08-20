@@ -8,9 +8,10 @@ using Luw.Data;
 namespace Luw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160819001226_ApplicationUserNotes")]
+    partial class ApplicationUserNotes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -70,11 +71,9 @@ namespace Luw.Data.Migrations
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.Property<DateTime>("WhenExpires");
-
                     b.Property<DateTime>("WhenJoined");
 
-                    b.Property<string>("ZipCode");
+                    b.Property<string>("Zip");
 
                     b.HasKey("Id");
 
@@ -95,7 +94,7 @@ namespace Luw.Data.Migrations
 
                     b.Property<Guid>("AddedBy");
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<Guid>("ApplicationUserId");
 
                     b.Property<string>("Note");
 
@@ -161,24 +160,6 @@ namespace Luw.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chapters");
-                });
-
-            modelBuilder.Entity("Luw.Models.MemberChapter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId");
-
-                    b.Property<int>("ChapterId");
-
-                    b.Property<DateTime>("WhenJoined");
-
-                    b.Property<DateTime?>("WhenLeft");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MemberChapters");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

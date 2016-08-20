@@ -43,7 +43,8 @@
       "version": "1.0.0-preview2-final",
       "type": "build"
     },
-    "Microsoft.EntityFrameworkCore.Relational": "1.0.0"
+    "Microsoft.EntityFrameworkCore.Relational": "1.0.0",
+    "Bootstrap.v3.Datetimepicker.CSS": "4.15.35"
   },
 
   "tools": {

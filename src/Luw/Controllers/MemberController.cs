@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Luw.Data;
 using Luw.Models;
+using Luw.Models.MemberViewModels;
 
 namespace Luw.Controllers
 {
@@ -39,16 +40,57 @@ namespace Luw.Controllers
                 return NotFound();
             }
 
-            return View(applicationUser);
+            var chapters = await _context.MemberChapters
+                .Include(mc => mc.Chapter)
+                .Where(mc => mc.ApplicationUserId == applicationUser.Id && mc.WhenLeft == null)
+                .ToListAsync();
+
+            var viewModel = new MemberDetailsViewModel
+            {
+                Id = applicationUser.Id,
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                Street1 = applicationUser.Street1,
+                Street2 = applicationUser.Street2,
+                City = applicationUser.City,
+                State = applicationUser.State,
+                ZipCode = applicationUser.ZipCode,
+                Phone = applicationUser.PhoneNumber,
+                Email = applicationUser.Email,
+                WhenJoined = applicationUser.WhenJoined,
+                WhenExpires = applicationUser.WhenExpires,
+                Notes = await _context.ApplicationUserNotes.Where(n => n.ApplicationUserId == applicationUser.Id).OrderByDescending(n => n.WhenAdded).ToListAsync(),
+                Chapters = chapters
+            };
+
+            return View(viewModel);
         }
 
         // GET: Member/Create
         public IActionResult Create()
         {
-            var model = new ApplicationUser
+            var model = new MemberCreateViewModel
             {
-                State = "UT"
+                State = "UT",
+                Status = "Active",
+                WhenJoined = DateTime.Now,
+                WhenExpires = DateTime.Now.AddYears(1)
             };
+            var chapterSelect = new List<SelectListItem>
+            {
+                new SelectListItem {Value = "0", Text = "None" }
+            };
+            var chapters = _context.Chapters.OrderBy(c => c.Name).ToList();
+            foreach (var chapter in chapters)
+            {
+                chapterSelect.Add(new SelectListItem
+                {
+                    Value = chapter.Id.ToString(),
+                    Text = chapter.Name
+                });
+            }
+            model.Chapters = chapterSelect;
+
             return View(model);
         }
 
@@ -57,15 +99,76 @@ namespace Luw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("City,Email,FirstName,LastName,State,Street1,Street2,Zip")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("City,Email,FirstName,LastName,State,Street1,Street2,Zip,Phone,Email,Note,WhenJoined,WhenExpires,Status,Chapter1,Chapter2")] MemberCreateViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
+                var applicationUser = new ApplicationUser
+                {
+                    City = viewModel.City,
+                    Email = viewModel.Email,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    State = viewModel.State,
+                    Street1 = viewModel.Street1,
+                    ZipCode = viewModel.Zip,
+                    PhoneNumber = viewModel.Phone,
+                    WhenJoined = viewModel.WhenJoined,
+                    WhenExpires = viewModel.WhenExpires,
+                    Status = viewModel.Status
+                };
                 _context.Add(applicationUser);
                 await _context.SaveChangesAsync();
+
+                if (!string.IsNullOrEmpty(viewModel.Note))
+                {
+                    var note = new ApplicationUserNote
+                    {
+                        ApplicationUserId = applicationUser.Id,
+                        WhenAdded = DateTime.Now,
+                        Note = viewModel.Note
+                    };
+                    _context.Add(note);
+                }
+                
+                if (viewModel.Chapter1 != 0)
+                {
+                    _context.Add(new MemberChapter
+                    {
+                        ApplicationUserId = applicationUser.Id,
+                        ChapterId = viewModel.Chapter1,
+                        WhenJoined = DateTime.Now
+                    });
+                }
+                if (viewModel.Chapter2 != 0)
+                {
+                    _context.Add(new MemberChapter
+                    {
+                        ApplicationUserId = applicationUser.Id,
+                        ChapterId = viewModel.Chapter2,
+                        WhenJoined = DateTime.Now
+                    });
+                }
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
-            return View(applicationUser);
+            var chapterSelect = new List<SelectListItem>
+            {
+                new SelectListItem {Value = "0", Text = "None" }
+            };
+            var chapters = _context.Chapters.OrderBy(c => c.Name).ToList();
+            foreach (var chapter in chapters)
+            {
+                chapterSelect.Add(new SelectListItem
+                {
+                    Value = chapter.Id.ToString(),
+                    Text = chapter.Name
+                });
+            }
+            viewModel.Chapters = chapterSelect;
+
+            return View(viewModel);
         }
 
         // GET: Member/Edit/5
@@ -81,7 +184,45 @@ namespace Luw.Controllers
             {
                 return NotFound();
             }
-            return View(applicationUser);
+            
+            var memberChapters = await _context.MemberChapters
+                .Where(m => m.ApplicationUserId == id && m.WhenLeft == null).ToListAsync();
+
+            var chapterSelect = new List<SelectListItem>
+            {
+                new SelectListItem {Value = "0", Text = "None" }
+            };
+            var chapters = await _context.Chapters.OrderBy(c => c.Name).ToListAsync();
+            foreach (var chapter in chapters)
+            {
+                chapterSelect.Add(new SelectListItem
+                {
+                    Value = chapter.Id.ToString(),
+                    Text = chapter.Name
+                });
+            }
+
+            var viewModel = new MemberEditViewModel
+            {
+
+                Id = applicationUser.Id,
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                Street1 = applicationUser.Street1,
+                Street2 = applicationUser.Street2,
+                City = applicationUser.City,
+                State = applicationUser.State,
+                Zip = applicationUser.ZipCode,
+                Phone = applicationUser.PhoneNumber,
+                Email = applicationUser.Email,
+                WhenJoined = applicationUser.WhenJoined,
+                Status = applicationUser.Status,
+                WhenExpires = applicationUser.WhenExpires,
+                Chapters = chapterSelect,
+                Chapter1 = memberChapters.Count >= 1 ? memberChapters[0].ChapterId : 0,
+                Chapter2 = memberChapters.Count == 2 ? memberChapters[1].ChapterId : 0
+            };
+            return View(viewModel);
         }
 
         // POST: Member/Edit/5
@@ -89,10 +230,11 @@ namespace Luw.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,City,Email,FirstName,LastName,State,Street1,Street2,Zip")] ApplicationUser viewModel)
+        public async Task<IActionResult> Edit([Bind("Id,City,Email,FirstName,LastName,State,Street1,Street2,Zip,Phone,Email,Note,WhenJoined,WhenExpires,Status,Chapter1,Chapter2")] MemberEditViewModel viewModel)
         {
-            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
-            if (id != applicationUser.Id)
+
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == viewModel.Id);
+            if (viewModel.Id != applicationUser.Id)
             {
                 return NotFound();
             }
@@ -109,8 +251,59 @@ namespace Luw.Controllers
                     applicationUser.Street2 = viewModel.Street2;
                     applicationUser.City = viewModel.City;
                     applicationUser.State = viewModel.State;
-                    applicationUser.Zip = viewModel.Zip;    
+                    applicationUser.ZipCode = viewModel.Zip;
+                    applicationUser.Email = viewModel.Email;
+                    applicationUser.PhoneNumber = viewModel.Phone;
+                    applicationUser.Status = viewModel.Status;
+                    applicationUser.WhenJoined = viewModel.WhenJoined;
+                    applicationUser.WhenExpires = viewModel.WhenExpires;
                     _context.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+
+                    if (!string.IsNullOrEmpty(viewModel.Note))
+                    {
+                        var note = new ApplicationUserNote
+                        {
+                            ApplicationUserId = applicationUser.Id,
+                            WhenAdded = DateTime.Now,
+                            Note = viewModel.Note
+                        };
+                        _context.Add(note);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    var memberChapters = _context.MemberChapters
+                        .Where(m => m.ApplicationUserId == viewModel.Id && m.WhenLeft == null).ToList();
+                    foreach (var mc in memberChapters)                    {
+                        if (!(mc.ChapterId == viewModel.Chapter1 || mc.ChapterId == viewModel.Chapter2))
+                        {
+                            mc.WhenLeft = DateTime.Now;
+                        }
+                    }
+                    if (viewModel.Chapter1 != 0)
+                    {
+                        if (!memberChapters.Any(m => m.ChapterId == viewModel.Chapter1))
+                        {
+                            _context.Add(new MemberChapter
+                            {
+                                ApplicationUserId = viewModel.Id,
+                                ChapterId = viewModel.Chapter1,
+                                WhenJoined = DateTime.Now
+                            });
+                        }
+                    }
+                    if (viewModel.Chapter2 != 0)
+                    {
+                        if (!memberChapters.Any(m => m.ChapterId == viewModel.Chapter2))
+                        {
+                            _context.Add(new MemberChapter
+                            {
+                                ApplicationUserId = viewModel.Id,
+                                ChapterId = viewModel.Chapter2,
+                                WhenJoined = DateTime.Now
+                            });
+                        }
+                    }
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -126,6 +319,21 @@ namespace Luw.Controllers
                 }
                 return RedirectToAction("Index");
             }
+
+            var chapterSelect = new List<SelectListItem>
+            {
+                new SelectListItem {Value = "0", Text = "None" }
+            };
+            var chapters = await _context.Chapters.OrderBy(c => c.Name).ToListAsync();
+            foreach (var chapter in chapters)
+            {
+                chapterSelect.Add(new SelectListItem
+                {
+                    Value = chapter.Id.ToString(),
+                    Text = chapter.Name
+                });
+            }
+            viewModel.Chapters = chapterSelect;
             return View(applicationUser);
         }
 

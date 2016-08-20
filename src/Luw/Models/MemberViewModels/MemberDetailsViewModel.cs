@@ -3,37 +3,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace Luw.Models
+namespace Luw.Models.MemberViewModels
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
+    public class MemberDetailsViewModel
     {
-        [Display(Name="First Name")]
-        [Required]
+        public string Id { get; set; }
         public string FirstName { get; set; }
-
-        [Display(Name="Last Name")]
-        [Required]
         public string LastName { get; set; }
-
-        [Display(Name="Address")]
         public string Street1 { get; set; }
         public string Street2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
-        
-        [MaxLength(20)]
-        public string Status { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name="Member Since")]
         public DateTime WhenJoined { get; set; }
 
         [DataType(DataType.Date)]
-        [Display(Name="Expires")]
         public DateTime WhenExpires { get; set; }
+        public IList<ApplicationUserNote> Notes { get; set; }
+        public IList<MemberChapter> Chapters { get; set; }
     }
 }

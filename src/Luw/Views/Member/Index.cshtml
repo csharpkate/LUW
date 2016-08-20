@@ -1,4 +1,5 @@
 @model IEnumerable<Luw.Models.ApplicationUser>
+<link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
 
 @{
     ViewData["Title"] = "Members List";
@@ -6,10 +7,10 @@
 
 <h2>Members</h2>
 <p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> New</a>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New</a>
 </p>
 <hr />
-<table id="memberTable" class="table table-hover table-striped table-bordered table-responsive">
+<table id="memberTable" class="table table-hover table-bordered table-responsive">
     <thead>
         <tr>
             <th>
@@ -23,6 +24,12 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhenExpires)
             </th>
         </tr>
     </thead>
@@ -42,6 +49,30 @@
                 <td>
                     <a href="mailto:@item.Email">@Html.DisplayFor(modelItem => item.Email)</a>
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                @if (item.Status == "Guest")
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>
+                        @if (item.WhenExpires < DateTime.Now)
+                        {
+                            @Html.DisplayFor(modelItem => item.WhenExpires)
+                        }
+                        else if (item.WhenExpires >= DateTime.Now && item.WhenExpires <= DateTime.Now.AddMonths(1))
+                        {
+                            <span class="label label-danger">@Html.DisplayFor(modelItem => item.WhenExpires)</span>
+                        }
+                        else if (item.WhenExpires >= DateTime.Now)
+                        {
+                            @Html.DisplayFor(modelItem => item.WhenExpires)
+                        }
+                    </td>
+                }
             </tr>
         }
     </tbody>

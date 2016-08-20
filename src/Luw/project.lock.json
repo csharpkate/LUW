@@ -3,6 +3,22 @@
   "version": 2,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "bootstrap/3.3.0": {
+        "type": "package",
+        "dependencies": {
+          "jquery": "1.9.0"
+        }
+      },
+      "Bootstrap.v3.Datetimepicker.CSS/4.15.35": {
+        "type": "package",
+        "dependencies": {
+          "Moment.js": "2.9.0",
+          "bootstrap": "3.3.0"
+        }
+      },
+      "jquery/1.9.0": {
+        "type": "package"
+      },
       "Libuv/1.9.0": {
         "type": "package",
         "dependencies": {
@@ -1950,6 +1966,9 @@
             "rid": "win"
           }
         }
+      },
+      "Moment.js/2.9.0": {
+        "type": "package"
       },
       "NETStandard.Library/1.6.0": {
         "type": "package",
@@ -4362,6 +4381,59 @@
     }
   },
   "libraries": {
+    "bootstrap/3.3.0": {
+      "sha512": "8Fn3Tnk23NpT0i1Osj3mydnknbzbFA/rOVk5hoGlqb0XXl/rDn085qanSCcCqsZlIGL2VWSbO4vihOs1hMtZ5A==",
+      "type": "package",
+      "path": "bootstrap/3.3.0",
+      "files": [
+        "bootstrap.3.3.0.nupkg.sha512",
+        "bootstrap.nuspec",
+        "content/Content/bootstrap-theme.css",
+        "content/Content/bootstrap-theme.css.map",
+        "content/Content/bootstrap-theme.min.css",
+        "content/Content/bootstrap.css",
+        "content/Content/bootstrap.css.map",
+        "content/Content/bootstrap.min.css",
+        "content/Scripts/bootstrap.js",
+        "content/Scripts/bootstrap.min.js",
+        "content/Scripts/npm.js",
+        "content/fonts/glyphicons-halflings-regular.eot",
+        "content/fonts/glyphicons-halflings-regular.svg",
+        "content/fonts/glyphicons-halflings-regular.ttf",
+        "content/fonts/glyphicons-halflings-regular.woff"
+      ]
+    },
+    "Bootstrap.v3.Datetimepicker.CSS/4.15.35": {
+      "sha512": "dzenbYOGMpVZPInlaDy7dBFhJPhZrP8rulX3/xI7zZLht+9RT14D9hfOWOcuzklN+6Nvs26sNKhKXNkCmY6qUg==",
+      "type": "package",
+      "path": "Bootstrap.v3.Datetimepicker.CSS/4.15.35",
+      "files": [
+        "Bootstrap.v3.Datetimepicker.CSS.4.15.35.nupkg.sha512",
+        "Bootstrap.v3.Datetimepicker.CSS.nuspec",
+        "content/Content/bootstrap-datetimepicker.css",
+        "content/Content/bootstrap-datetimepicker.min.css",
+        "content/Scripts/bootstrap-datetimepicker.js",
+        "content/Scripts/bootstrap-datetimepicker.min.js",
+        "tools/install.ps1"
+      ]
+    },
+    "jquery/1.9.0": {
+      "sha512": "bS6OGSd/QL39vKKhATpeehgZDCzV6foRJ52EocEGAB29VetwXkQHN6KQIBlBbW9VJzuHr+rQxHYZ13MnPGQ/vw==",
+      "type": "package",
+      "path": "jquery/1.9.0",
+      "files": [
+        "Content/Scripts/jquery-1.9.0-vsdoc.js",
+        "Content/Scripts/jquery-1.9.0.js",
+        "Content/Scripts/jquery-1.9.0.min.js",
+        "Content/Scripts/jquery-1.9.0.min.map",
+        "Tools/common.ps1",
+        "Tools/install.ps1",
+        "Tools/jquery-1.9.0.intellisense.js",
+        "Tools/uninstall.ps1",
+        "jquery.1.9.0.nupkg.sha512",
+        "jquery.nuspec"
+      ]
+    },
     "Libuv/1.9.0": {
       "sha512": "9Q7AaqtQhS8JDSIvRBt6ODSLWDBI4c8YxNxyCQemWebBFUtBbc6M5Vi5Gz1ZyIUlTW3rZK9bIr5gnVyv0z7a2Q==",
       "type": "package",
@@ -6034,6 +6106,19 @@
         "runtimes/win/lib/net46/Microsoft.Win32.Registry.dll",
         "runtimes/win/lib/netcore50/_._",
         "runtimes/win/lib/netstandard1.3/Microsoft.Win32.Registry.dll"
+      ]
+    },
+    "Moment.js/2.9.0": {
+      "sha512": "4rhbvFzmgXp/gjvwjxt9Qjmdz+2CD9T99erXEDtZHlYxaI06F9A4628/Vpxklm8D9RmwJjKjp1244FwEh+a5WQ==",
+      "type": "package",
+      "path": "Moment.js/2.9.0",
+      "files": [
+        "Content/Scripts/moment-with-locales.js",
+        "Content/Scripts/moment-with-locales.min.js",
+        "Content/Scripts/moment.js",
+        "Content/Scripts/moment.min.js",
+        "Moment.js.2.9.0.nupkg.sha512",
+        "Moment.js.nuspec"
       ]
     },
     "NETStandard.Library/1.6.0": {
@@ -11020,6 +11105,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
+      "Bootstrap.v3.Datetimepicker.CSS >= 4.15.35",
       "Microsoft.AspNetCore.Authentication.Cookies >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 1.0.0",
