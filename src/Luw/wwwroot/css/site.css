@@ -52,3 +52,8 @@ textarea {
     display: none
   }
 }
+
+.pin-selected {
+    background-color: darkgrey;
+    color: black;
+}

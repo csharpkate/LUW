@@ -35,5 +35,7 @@ namespace Luw.Models
         [DataType(DataType.Date)]
         [Display(Name="Expires")]
         public DateTime WhenExpires { get; set; }
+
+        public virtual IList<MemberChapter> Chapters { get; set; }
     }
 }

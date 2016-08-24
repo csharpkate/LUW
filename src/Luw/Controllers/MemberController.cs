@@ -21,9 +21,58 @@ namespace Luw.Controllers
         }
 
         // GET: Member
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string status = "Active")
         {
-            return View(await _context.ApplicationUser.ToListAsync());
+            var viewModel = new MemberIndexViewModel
+            {
+                Status = status,
+                Members = new List<MemberIndexRow>()
+            };
+
+            IList<ApplicationUser> applicationUsers;
+            var chapters = _context.Chapters.ToList();
+
+            if (status == "All")
+            {
+                applicationUsers = _context.ApplicationUser.Include(a => a.Chapters).ToList();
+            }
+            else
+            {
+                applicationUsers = _context.ApplicationUser
+                    .Where(a => a.Status == status)
+                    .Include(a => a.Chapters).ToList();
+            }
+            foreach (var au in applicationUsers)
+            {
+                viewModel.Members.Add(new MemberIndexRow
+                {
+                    Id = au.Id,
+                    FirstName = au.FirstName,
+                    LastName = au.LastName,
+                    City = au.City,
+                    Status = au.Status,
+                    Email = au.Email,
+                    WhenExpires = au.WhenExpires,
+                    Chapter = GetChapterNames(au.Chapters.ToList(), chapters)
+                });
+            }
+
+            return View(viewModel);
+        }
+        
+        private string GetChapterNames(List<MemberChapter> memberChapter, List<Chapter> chapters)
+        {
+            var name = "";
+            var mc = memberChapter.Where(m => m.WhenLeft == null).ToList();
+            if (mc.Count >= 1)
+            {
+                name = chapters.FirstOrDefault(c => c.Id == mc[0].ChapterId).Name;
+            }
+            if (mc.Count == 2)
+            {
+                name += ", " + chapters.FirstOrDefault(c => c.Id == mc[1].ChapterId).Name;
+            }
+            return name;
         }
 
         // GET: Member/Details/5
