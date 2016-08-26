@@ -418,5 +418,94 @@ namespace Luw.Controllers
         {
             return _context.ApplicationUser.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> Renew(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
+            if (applicationUser == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new MemberRenewViewModel
+            {
+                Id = applicationUser.Id,
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                Street1 = applicationUser.Street1,
+                Street2 = applicationUser.Street2,
+                City = applicationUser.City,
+                State = applicationUser.State,
+                ZipCode = applicationUser.ZipCode,
+                Phone = applicationUser.PhoneNumber,
+                Email = applicationUser.Email,
+                WhenJoined = applicationUser.WhenJoined,
+                WhenExpires = applicationUser.WhenExpires,
+                NewWhenExpires = applicationUser.WhenExpires < DateTime.Now ? DateTime.Now.AddYears(1) : applicationUser.WhenExpires.AddYears(1)
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Renew([Bind("Id,NewWhenExpires")] MemberRenewViewModel viewModel)
+        {
+
+            var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == viewModel.Id);
+            if (viewModel.Id != applicationUser.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    applicationUser.WhenExpires = viewModel.NewWhenExpires;
+                    applicationUser.Status = "Active";
+                    _context.Update(applicationUser);
+                    await _context.SaveChangesAsync();
+
+                    }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ApplicationUserExists(applicationUser.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+
+            viewModel = new MemberRenewViewModel
+            {
+                Id = applicationUser.Id,
+                FirstName = applicationUser.FirstName,
+                LastName = applicationUser.LastName,
+                Street1 = applicationUser.Street1,
+                Street2 = applicationUser.Street2,
+                City = applicationUser.City,
+                State = applicationUser.State,
+                ZipCode = applicationUser.ZipCode,
+                Phone = applicationUser.PhoneNumber,
+                Email = applicationUser.Email,
+                WhenJoined = applicationUser.WhenJoined,
+                WhenExpires = applicationUser.WhenExpires,
+                NewWhenExpires = applicationUser.WhenExpires < DateTime.Now ? DateTime.Now.AddYears(1) : applicationUser.WhenExpires.AddYears(1)
+            };
+
+            return View(viewModel);
+        }
+
     }
 }
