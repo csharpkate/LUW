@@ -1,6 +1,5 @@
 @model Luw.Models.MemberViewModels.MemberIndexViewModel
-<link href="~/lib/DataTables-1.10.12/css/dataTables.bootstrap.css" rel="stylesheet" />
-
+<link href="~/lib/datatables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 @{
     ViewData["Title"] = "Members List";
 }
@@ -89,9 +88,8 @@
 </table>
 
 @section Scripts {
-    <script src="~/lib/DataTables-1.10.12/datatables.js"></script>
-    <script src="~/lib/DataTables-1.10.12/js/jquery.dataTables.js"></script>
-    <script src="~/lib/DataTables-1.10.12/js/dataTables.bootstrap.js"></script>
+    <script src="~/lib/datatables/media/js/datatables.min.js"></script>
+    <script src="~/lib/datatables/media/js/dataTables.bootstrap.min.js"></script>
     
     <script>
         $(document).ready(function(){
