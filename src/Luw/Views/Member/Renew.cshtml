@@ -1,4 +1,5 @@
 @model Luw.Models.MemberViewModels.MemberRenewViewModel
+<link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
 
 @{
     ViewData["Title"] = "Renew Details";
@@ -85,8 +86,10 @@
             <input asp-for="Id" hidden />
             <div class="form-group">
                 <label asp-for="NewWhenExpires" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input type='text' asp-for="NewWhenExpires" class="form-control" />
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type='text' asp-for="NewWhenExpires" class="form-control" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                     <span asp-validation-for="NewWhenExpires" class="text-danger" />
                 </div>
             </div>
@@ -100,3 +103,9 @@
     </div>
 </form>
 <br /><br />
+
+@section Scripts {
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    $('.input-group.date').datepicker({});
+}

@@ -1,4 +1,5 @@
 @model Luw.Models.MemberViewModels.MemberEditViewModel
+<link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
 
 @{
     ViewData["Title"] = "Edit Member";
@@ -136,21 +137,24 @@
                     <span asp-validation-for="Status" class="text-danger" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="whenJoined">
                 <label asp-for="WhenJoined" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input type='text' asp-for="WhenJoined" class="form-control" />
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type='text' asp-for="WhenJoined" class="form-control" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                     <span asp-validation-for="WhenJoined" class="text-danger" />
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="WhenExpires" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input type='text' asp-for="WhenExpires" class="form-control" />
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type='text' asp-for="WhenExpires" class="form-control" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
                     <span asp-validation-for="WhenExpires" class="text-danger" />
                 </div>
-            </div>
-            <div class="form-group">
+            </div><div class="form-group">
                 <label asp-for="Chapter1" class="col-md-2 control-label"></label>
                 <div class="col-md-10">
                     <select asp-for="Chapter1" asp-items="Model.Chapters" class="form-control"></select>
@@ -182,5 +186,9 @@
 </form>
 
 @section Scripts {
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    $('.input-group.date').datepicker({});    
 }

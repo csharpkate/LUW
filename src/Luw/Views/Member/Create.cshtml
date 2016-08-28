@@ -4,8 +4,7 @@
     ViewData["Title"] = "New Member";
 }
  
-<link href="~/css/bootstrap-datepicker3.css" rel="stylesheet" />
-<script src="~/js/bootstrap-datepicker.min.js"></script>
+<link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
 <h2>New Member</h2>
 
 <form asp-action="Create">
@@ -137,10 +136,10 @@
                     <span asp-validation-for="Status" class="text-danger" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="whenJoined">
                 <label asp-for="WhenJoined" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <div class="input-group date">
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
                         <input type='text' asp-for="WhenJoined" class="form-control"/><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                     </div>
                     <span asp-validation-for="WhenJoined" class="text-danger" />
@@ -148,10 +147,12 @@
              </div>
             <div class="form-group">
                 <label asp-for="WhenExpires" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input type='text' asp-for="WhenExpires" class="form-control" />
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type='text' asp-for="WhenExpires" class="form-control" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span>   
+                    </div>
                     <span asp-validation-for="WhenExpires" class="text-danger" />
-                </div>
+                    </div>
             </div>
             <div class="form-group">
                 <label asp-for="Chapter1" class="col-md-2 control-label"></label>
@@ -185,7 +186,7 @@
 </form>
 
 @section Scripts {
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    $('.date').datepicker();
-    
+    $('.input-group.date').datepicker({});    
 }
