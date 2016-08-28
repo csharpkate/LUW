@@ -1,0 +1,112 @@
+@model Luw.Models.MemberViewModels.MemberIndexViewModel
+<link href="~/lib/datatables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+@{
+    ViewData["Title"] = "Members List";
+}
+
+<h2>Members</h2>
+<p>
+    <a asp-action="Create" class="btn btn-success"><i class="fa fa-plus"></i> New</a>
+</p>
+<hr />
+<input asp-for="Status" hidden />
+<div>
+    <div class="btn-group" role="group" aria-label="...">
+        <a href="~/member/index?status=Active" id="Active" class="btn btn-default">Active</a>
+        <a href="~/member/index?status=Inactive" id="Inactive" class="btn btn-default">Inactive</a>
+        <a href="~/member/index?status=Guest" id="Guest" class="btn btn-default">Guest</a>
+        <a href="~/member/index?status=All" id="All" class="btn btn-default">All</a>
+    </div>
+    <br /><br />
+</div>
+
+<table id="memberTable" class="table table-hover table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("First Name")
+            </th>
+            <th>
+                @Html.DisplayName("Last Name")
+            </th>
+            <th>
+                @Html.DisplayName("City")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Status")
+            </th>
+            <th>
+                @Html.DisplayName("Expires")
+            </th>
+            <th>
+                @Html.DisplayName("Chapter")
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Members)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.FirstName)</a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.LastName)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.City)
+                </td>
+                <td>
+                    <a href="mailto:@item.Email">@Html.DisplayFor(modelItem => item.Email)</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                @if (item.Status == "Guest")
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WhenExpires)
+                        @if (item.WhenExpires >= DateTime.Now && item.WhenExpires <= DateTime.Now.AddMonths(1))
+                        {
+                            <a asp-action="Renew" asp-route-id="@item.Id" class="btn-xs btn-warning"><i class="fa fa-calendar-check-o"></i> Renew</a>
+                        }
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(model => item.Chapter)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="~/lib/datatables/media/js/datatables.min.js"></script>
+    <script src="~/lib/datatables/media/js/dataTables.bootstrap.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            $('#memberTable').DataTable();
+            var item = '#' + $('#Status').val();
+            $(item).addClass('pin-selected').attr('disabled', 'disabled');
+        });
+
+        function submitForm(status) {
+            $("#Status").val(status);
+            document.index.submit();
+        }
+
+        function indexParam(status)
+        {
+            window.location.href = "\index\?status=" + status;
+
+        }
+    </script>
+}

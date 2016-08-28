@@ -22,6 +22,8 @@ namespace Luw.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<string>("City");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -29,6 +31,12 @@ namespace Luw.Data.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -48,10 +56,25 @@ namespace Luw.Data.Migrations
 
                     b.Property<string>("SecurityStamp");
 
+                    b.Property<string>("State");
+
+                    b.Property<string>("Status")
+                        .HasAnnotation("MaxLength", 20);
+
+                    b.Property<string>("Street1");
+
+                    b.Property<string>("Street2");
+
                     b.Property<bool>("TwoFactorEnabled");
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
+
+                    b.Property<DateTime>("WhenExpires");
+
+                    b.Property<DateTime>("WhenJoined");
+
+                    b.Property<string>("ZipCode");
 
                     b.HasKey("Id");
 
@@ -63,6 +86,24 @@ namespace Luw.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Luw.Models.ApplicationUserNote", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AddedBy");
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<string>("Note");
+
+                    b.Property<DateTime>("WhenAdded");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApplicationUserNotes");
                 });
 
             modelBuilder.Entity("Luw.Models.Chapter", b =>
@@ -120,6 +161,24 @@ namespace Luw.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Chapters");
+                });
+
+            modelBuilder.Entity("Luw.Models.MemberChapter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("ChapterId");
+
+                    b.Property<DateTime>("WhenJoined");
+
+                    b.Property<DateTime?>("WhenLeft");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MemberChapters");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>

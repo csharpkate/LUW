@@ -24,5 +24,8 @@ namespace Luw.Data
         }
 
         public DbSet<Chapter> Chapters { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<ApplicationUserNote> ApplicationUserNotes { get; set; }
+        public DbSet<MemberChapter> MemberChapters { get; set; }
     }
 }

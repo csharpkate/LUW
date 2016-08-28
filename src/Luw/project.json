@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Luw-886aa141-d300-46be-ab67-08670a81a83f",
 
   "dependencies": {
@@ -42,7 +42,9 @@
     "Microsoft.VisualStudio.Web.CodeGenerators.Mvc": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.EntityFrameworkCore.Relational": "1.0.0",
+    "Bootstrap.v3.Datetimepicker.CSS": "4.15.35"
   },
 
   "tools": {

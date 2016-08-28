@@ -1,0 +1,111 @@
+@model Luw.Models.MemberViewModels.MemberRenewViewModel
+<link href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" rel="stylesheet" />
+
+@{
+    ViewData["Title"] = "Renew Details";
+}
+
+<h2>Renew Member</h2>
+<p></p>
+<hr />
+<div class="row">
+    <div class="col-md-7">
+        <div class="well">
+            <div style="padding-left: 20px">
+                <h4>Member information</h4>
+                <div class="row">
+                    <label class="col-md-2 control-label">Name</label>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 control-label">Address</label>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Street1)
+                    </div>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Street2)
+                    </div>
+                    <div class="col-md-offset-2 col-md-10">
+                        @Html.DisplayFor(model => model.City), @Html.DisplayFor(model => model.State) @Html.DisplayFor(model => model.ZipCode)
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 control-label">Phone</label>
+                    <div class="col-md-10">
+                        @Html.DisplayFor(model => model.Phone)
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-2 control-label">Email</label>
+                    <div class="col-md-10">
+                        <a href="mailto:@Model.Email">@Html.DisplayFor(model => model.Email)</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4">
+        <div class="well">
+            <h4>Membership Information</h4>
+            <div class="row">
+                <label class="col-md-2 control-label">Expires</label>
+                <div class="col-md-10">
+                    @if (Model.WhenExpires < DateTime.Now)
+                    {
+                        @Html.DisplayFor(model => model.WhenExpires)
+                    }
+                    else if (Model.WhenExpires >= DateTime.Now && Model.WhenExpires <= DateTime.Now.AddMonths(1))
+                    {
+                        <span class="label label-danger">@Html.DisplayFor(modelItem => Model.WhenExpires)</span>
+                    }
+                    else if (Model.WhenExpires >= DateTime.Now)
+                    {
+                        @Html.DisplayFor(modelItem => Model.WhenExpires)
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-md-2 control-label">Since</label>
+                <div class="col-md-10">
+                    @Html.DisplayFor(model => model.WhenJoined)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form  asp-action="Renew">
+    <div class="form-horizontal">
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="well">
+            <input asp-for="Id" hidden />
+            <div class="form-group">
+                <label asp-for="NewWhenExpires" class="col-md-2 control-label"></label>
+                <div class="col-md-3">
+                    <div class="input-group date" data-provide="datepicker">
+                        <input type='text' asp-for="NewWhenExpires" class="form-control" /><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                    <span asp-validation-for="NewWhenExpires" class="text-danger" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                <a asp-action="Index" class="btn btn-default">Cancel</a>
+            </div>
+        </div>
+    </div>
+</form>
+<br /><br />
+
+@section Scripts {
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    $('.input-group.date').datepicker({});
+}
