@@ -199,7 +199,7 @@ namespace Luw.Controllers
                     });
                 }
                 await _context.SaveChangesAsync();
-
+                Response.Cookies.Append("FlashSuccess", "Member " + applicationUser.FirstName + " " + applicationUser.LastName + " was successfully saved");
                 return RedirectToAction("Index");
             }
             var chapterSelect = new List<SelectListItem>
@@ -354,6 +354,7 @@ namespace Luw.Controllers
                         }
                     }
                     await _context.SaveChangesAsync();
+                    Response.Cookies.Append("FlashSuccess", "Member " + applicationUser.FirstName + " " + applicationUser.LastName + " was successfully saved");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -411,6 +412,7 @@ namespace Luw.Controllers
             var applicationUser = await _context.ApplicationUser.SingleOrDefaultAsync(m => m.Id == id);
             _context.ApplicationUser.Remove(applicationUser);
             await _context.SaveChangesAsync();
+            Response.Cookies.Append("FlashSuccess", "Member " + applicationUser.FirstName + " " + applicationUser.LastName + " was successfully deleted");
             return RedirectToAction("Index");
         }
 
@@ -470,6 +472,7 @@ namespace Luw.Controllers
                     applicationUser.WhenExpires = viewModel.NewWhenExpires;
                     applicationUser.Status = "Active";
                     _context.Update(applicationUser);
+                    Response.Cookies.Append("FlashSuccess", "Member " + applicationUser.FirstName + " " + applicationUser.LastName + " was successfully renewed");
                     await _context.SaveChangesAsync();
 
                     }

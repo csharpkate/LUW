@@ -94,6 +94,7 @@ namespace Luw.Controllers
             {
                 _context.Add(chapter);
                 await _context.SaveChangesAsync();
+                Response.Cookies.Append("FlashSuccess", "Chapter " + chapter.Name + " was successfully saved");
                 return RedirectToAction("Index");
             }
             return View(chapter);
@@ -133,6 +134,7 @@ namespace Luw.Controllers
                 {
                     _context.Update(chapter);
                     await _context.SaveChangesAsync();
+                    Response.Cookies.Append("FlashSuccess", "Chapter " + chapter.Name + " was successfully saved");
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,6 +177,7 @@ namespace Luw.Controllers
             var chapter = await _context.Chapters.SingleOrDefaultAsync(m => m.Id == id);
             _context.Chapters.Remove(chapter);
             await _context.SaveChangesAsync();
+            Response.Cookies.Append("FlashSuccess", "Chapter " + chapter.Name + " was successfully deleted");
             return RedirectToAction("Index");
         }
 
