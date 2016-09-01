@@ -12,7 +12,7 @@ namespace Luw.Models.ChapterViewModels
         public string Name { get; set; }
         public string SubName { get; set; }
 
-        [Display(Name="Description")]
+        [Display(Name = "Description")]
         public string Description { get; set; }
         public string Url { get; set; }
         public string Email { get; set; }
@@ -25,5 +25,6 @@ namespace Luw.Models.ChapterViewModels
         public string Zip { get; set; }
         public string MeetingInfo { get; set; }
         public string Notes { get; set; }
+        public IList<ChapterMemberViewModel> Members { get; set; }
     }
 }

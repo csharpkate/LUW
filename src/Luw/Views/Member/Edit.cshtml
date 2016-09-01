@@ -189,6 +189,7 @@
     <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
     
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    $('.input-group.date').datepicker({});    
+    <script>
+        $('.input-group.date').datepicker({});
+    </script>
 }

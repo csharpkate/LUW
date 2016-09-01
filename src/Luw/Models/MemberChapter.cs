@@ -13,5 +13,6 @@ namespace Luw.Models
         public DateTime WhenJoined { get; set; }
         public DateTime? WhenLeft { get; set; }
         public virtual Chapter Chapter { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

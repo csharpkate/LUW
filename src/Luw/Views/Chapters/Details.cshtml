@@ -75,3 +75,28 @@
         </div>
     </div>
 </div>
+
+<div class="well">
+    <h4>Members</h4>
+    <table class="table table-responsive table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Member Since</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Members)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(item => row.FirstName)</td>
+                    <td>@Html.DisplayFor(item => row.LastName)</td>
+                    <td>@Html.DisplayFor(item => row.WhenJoined)</td>
+                    <td><a href="mailto:@row.Email">@Html.DisplayFor(item => row.Email)</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

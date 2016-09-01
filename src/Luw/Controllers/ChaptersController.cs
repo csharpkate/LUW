@@ -41,7 +41,7 @@ namespace Luw.Controllers
 
         // GET: Chapters/Details/5
         public async Task<IActionResult> Details(int? id)
-        {
+        { 
             if (id == null)
             {
                 return NotFound();
@@ -52,6 +52,22 @@ namespace Luw.Controllers
             {
                 return NotFound();
             }
+
+            var chapterMembers = _context.MemberChapters
+                .Where(m => m.ChapterId == model.Id && m.WhenLeft == null)
+                .Include(m => m.ApplicationUser);
+            var memberInfo = new List<ChapterMemberViewModel>();
+            foreach (var member in chapterMembers)
+            {
+                memberInfo.Add(new ChapterMemberViewModel
+                {
+                    FirstName = member.ApplicationUser.FirstName,
+                    LastName = member.ApplicationUser.LastName,
+                    WhenJoined = member.WhenJoined,
+                    Email = member.ApplicationUser.Email
+                }); 
+            }
+
             var viewModel = new DetailsViewModel
             {
                 Id = model.Id,
@@ -67,7 +83,8 @@ namespace Luw.Controllers
                 Url = model.Url,
                 Email = model.Email,
                 Phone = model.Phone,
-                Notes = model.Notes
+                Notes = model.Notes,
+                Members = memberInfo.OrderBy(m => m.LastName).ThenBy(m => m.FirstName).ToList()
             };
 
             return View(viewModel);
